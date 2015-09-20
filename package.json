@@ -1,0 +1,30 @@
+{
+  "name": "wedoapi",
+  "version": "1.0.0",
+  "description": "# ldmcdaniel.github.io",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.14.0",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "method-override": "^2.3.5",
+    "mongodb": "^2.0.43",
+    "mongoose": "^4.1.7",
+    "morgan": "^1.6.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ldmcdaniel/weDoAPI.git"
+  },
+  "author": "Lucas McDaniel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ldmcdaniel/weDoAPI/issues"
+  },
+  "homepage": "https://github.com/ldmcdaniel/weDoAPI#readme"
+}
