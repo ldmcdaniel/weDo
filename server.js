@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var morgan = require('morgan');
 var methodOverride = require('method-override');
-var routes = require('./routes');
+var bcrypt = require('bcrypt');
 var app = express();
 var bodyParser = require('body-parser');
 
@@ -28,37 +28,84 @@ var User = mongoose.model('User', userSchema);
 app.get('/api/users', function(req, res) {
 
   // use mongoose to get all todos in the database
-  User.find(function(err, users) {
-
+  User.findOne({ email: req.body.email }, function(err, users) {
+    if (users) {
+      console.log("It worked  " + users)
+    }
     // if there is an error retrieving, send the error. nothing after res.send(err) will execute
     if (err)
         res.send(err)
 
-    res.json(users); // return all todos in JSON format
+    res.json(users); // return all users in JSON format
   });
 });
 
-// create todo and send back all todos after creation
+// register a new user
 app.post('/api/users', function(req, res) {
-  console.log(req.body.first);
-    // create a todo, information comes from AJAX request from Angular
-    User.create({
-      first : req.body.first,
-      last : req.body.last,
-      email : req.body.email,
-      password: req.body.password
-    }, function(err, user) {
-      if (err)
-        res.send(err);
+  var user = User.find({email: req.body.email});
 
-      // get and return all the todos after you create another
-      User.find(function(err, users) {
+ //     if (user) {
+ //    // do login
+ //    //bcrypt.compare()
+ //    //res.session
+ // } else {
+ //    // do register
+ //    bcrypt.hash(req.body.password, 8, function(err, hash) {
+ //      // console.log(hash);
+ //      User.create({
+ //        first : req.body.first,
+ //        last : req.body.last,
+ //        email : req.body.email,
+ //        password: hash
+ //      }, function(err, user) {
+ //        if (err)
+ //          res.send(err);
+
+ //        // get and return all the todos after you create another
+ //        User.find(function(err, users) {
+ //          if (err)
+ //            res.send(err)
+ //          res.json(users);
+ //        });
+ //      });
+ //    });
+
+    bcrypt.hash(req.body.password, 8, function(err, hash) {
+      // console.log(hash);
+      User.create({
+        first : req.body.first,
+        last : req.body.last,
+        email : req.body.email,
+        password: hash
+      }, function(err, user) {
         if (err)
-          res.send(err)
-        res.json(users);
-      });
-    });
+          res.send(err);
 
+        // get and return all the todos after you create another
+        User.find(function(err, users) {
+          if (err)
+            res.send(err)
+          res.json(users);
+        });
+      });
+    });    // create a user, information comes from AJAX request from Angular
+    // console.log(hashPass);
+    // User.create({
+    //   first : req.body.first,
+    //   last : req.body.last,
+    //   email : req.body.email,
+    //   password: req.body.password
+    // }, function(err, user) {
+    //   if (err)
+    //     res.send(err);
+
+    //   // get and return all the todos after you create another
+    //   User.find(function(err, users) {
+    //     if (err)
+    //       res.send(err)
+    //     res.json(users);
+    //   });
+    // });
 });
 
 // delete a todo
