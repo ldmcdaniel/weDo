@@ -1,12 +1,23 @@
 var Group = require('../models/Groups');
 
 module.exports = function (app) {
-  app.get('/api/groups', function(req, res) {
+  app.get('/api/myGroups', function(req, res) {
     // use mongoose to get all groups in the database
     Group.find(function(err, groups) {
-      if (err)
-          res.send(err)
+      // if (err)
+        // res.send(err)
       res.json(groups); // return all todos in JSON format
+    });
+  });
+
+  app.get('/api/myGroups/:group_id', function(req, res) {
+    // use mongoose to get all groups in the database
+    console.log('look here:', req.params);
+    Group.findOne({_id : req.params.group_id}, function(err, groups) {
+      console.log(groups);
+      res.send(groups);
+      // if (err) throw err;
+      // res.json(groups); // return all todos in JSON format
     });
   });
 

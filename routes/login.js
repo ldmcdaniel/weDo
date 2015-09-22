@@ -10,7 +10,8 @@ module.exports = function (app) {
           if (user) {
             bcrypt.compare(req.body.password, user.password, function (err, match) {
               if (match) {
-                res.send(user);
+                res.send(user._id);
+                // res.redirect('http://localhost:8100/#/app/')
               } else {
                 res.status(401).send({err: 'Password does not match'});
               }
