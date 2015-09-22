@@ -2,22 +2,16 @@ var Group = require('../models/Groups');
 
 module.exports = function (app) {
   app.get('/api/groups', function(req, res) {
-
-    // use mongoose to get all todos in the database
+    // use mongoose to get all groups in the database
     Group.find(function(err, groups) {
-
-      // if there is an error retrieving, send the error. nothing after res.send(err) will execute
       if (err)
           res.send(err)
-
       res.json(groups); // return all todos in JSON format
     });
   });
 
-  // create todo and send back all todos after creation
+  // create group and send back all todos after creation
   app.post('/api/groups', function(req, res) {
-    console.log(req.body);
-    // create a todo, information comes from AJAX request from Angular
     Group.create({
       name : req.body.name,
       done : false
@@ -25,7 +19,7 @@ module.exports = function (app) {
       if (err)
         res.send(err);
 
-      // get and return all the todos after you create another
+      // get and return all the groups after you create another
       Group.find(function(err, groups) {
         if (err)
           res.send(err)
@@ -42,7 +36,7 @@ module.exports = function (app) {
       if (err)
           res.send(err);
 
-      // get and return all the todos after you create another
+      // get and return all the groups after you create another
       Group.find(function(err, groups) {
         if (err)
           res.send(err)

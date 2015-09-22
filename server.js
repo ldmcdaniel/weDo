@@ -9,6 +9,7 @@ mongoose.connect(database.url);
 var morgan = require('morgan');
 var methodOverride = require('method-override');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 // Models
 var User = require('./models/Users');
