@@ -1,25 +1,15 @@
-var User = require('../models/Users');
-var bcrypt = require('bcrypt');
+var User = require('../models/Users'),
+    bcrypt = require('bcrypt'),
+    passport = require('passport');
 
 module.exports = function (app) {
   app.post('/api/register', function(req, res) {
-    bcrypt.hash(req.body.password, 8, function(err, hash) {
-      // console.log(hash);
-      User.create({
-        first : req.body.first,
-        last : req.body.last,
-        email : req.body.email,
-        password: hash
-      }, function(err, user) {
-        if (err)
-          res.send(err);
-
-        // get and return all the todos after you create another
-        User.find(function(err, users) {
-          if (err)
-            res.send(err)
-          res.json(users);
-        });
+    User.register(new User({ username: req.body.username }), req.body.password, function(err, account) {
+      if (err) {
+        return res.status(500).json({err: err});
+      }
+      passport.authenticate('local')(req, res, function () {
+        return res.status(200).json({status: 'Registration successful!'});
       });
     });
   });

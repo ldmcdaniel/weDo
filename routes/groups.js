@@ -2,30 +2,25 @@ var Group = require('../models/Groups');
 
 module.exports = function (app) {
   app.get('/api/myGroups', function(req, res) {
-    // use mongoose to get all groups in the database
-    Group.find(function(err, groups) {
-      // if (err)
-        // res.send(err)
-      res.json(groups); // return all todos in JSON format
+    console.log(req.session.user_id)
+    Group.find({_id : req.session.user_id}, function(err, groups) {
+      if (err) throw err;
+      res.json(groups);
     });
   });
 
   app.get('/api/myGroups/:group_id', function(req, res) {
-    // use mongoose to get all groups in the database
-    console.log('look here:', req.params);
     Group.findOne({_id : req.params.group_id}, function(err, groups) {
-      console.log(groups);
       res.send(groups);
-      // if (err) throw err;
-      // res.json(groups); // return all todos in JSON format
+      if (err) throw err;
     });
   });
 
   // create group and send back all todos after creation
   app.post('/api/groups', function(req, res) {
+    console.log(req.body);
     Group.create({
-      name : req.body.name,
-      done : false
+      name : req.body.name
     }, function(err, group) {
       if (err)
         res.send(err);
